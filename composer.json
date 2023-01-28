@@ -16,7 +16,7 @@
     "lint": "parallel-lint --exclude .git --exclude vendor bin .",
     "cs-check": "php-cs-fixer -v --dry-run --using-cache=no fix",
     "cs-fix": "php-cs-fixer --using-cache=no fix",
-    "test": "export XDEBUG_MODE=coverage && phpunit --configuration phpunit.xml"
+    "test": "export XDEBUG_MODE=coverage && phpunit --configuration phpunit.xml.dist"
   },
   "config":{
     "bin-dir": "bin"
