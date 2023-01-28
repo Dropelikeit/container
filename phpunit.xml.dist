@@ -10,18 +10,11 @@
             <directory>./vendor</directory>
         </exclude>
         <report>
-            <clover outputFile="/tmp/coverage.xml"/>
-            <html outputDirectory="/tmp/report" lowUpperBound="35" highLowerBound="70"/>
-            <php outputFile="/tmp/coverage.serialized"/>
+            <clover outputFile="build/output/tests/coverage.xml"/>
             <text outputFile="php://stdout" showUncoveredFiles="false"/>
         </report>
     </coverage>
     <testsuite name="PriceCalculator">
         <directory suffix="Test.php">tests</directory>
     </testsuite>
-    <logging>
-        <junit outputFile="/tmp/logfile.xml"/>
-        <testdoxHtml outputFile="/tmp/testdox.html"/>
-        <testdoxText outputFile="/tmp/testdox.txt"/>
-    </logging>
 </phpunit>
