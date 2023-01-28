@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
@@ -10,7 +11,9 @@ final class ClassStore implements ClassStoreInterface
     /**
      * @param array<class-string, ClassItemInterface> $classes
      */
-    private function __construct(private array $classes = []) {}
+    private function __construct(private array $classes = [])
+    {
+    }
 
     public static function create(): self
     {

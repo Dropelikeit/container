@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Acceptance;
@@ -9,7 +10,6 @@ use MarcelStrahl\Container\Dto\ClassStore;
 use MarcelStrahl\Container\Dto\ObjectStore;
 use MarcelStrahl\Container\FileLoader\AdapterBuilder;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use MarcelStrahl\Container\ObjectContainer;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummy;
@@ -19,13 +19,14 @@ use Webmozart\Assert\Assert;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
+ *
+ * @internal
+ *
+ * @coversNothing
  */
 final class WorkflowTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function canLoadContainerWithOneServiceFile(): void
+    public function testCanLoadContainerWithOneServiceFile(): void
     {
         $adapter = (new AdapterBuilder())->build(PHPArrayAdapter::class);
 
@@ -41,16 +42,13 @@ final class WorkflowTest extends TestCase
 
         $app = AppContainer::initialize($classContainer, $objectContainer);
 
-        $this->assertTrue($app->has(PhpArrayLoaderClassDummy::class));
+        static::assertTrue($app->has(PhpArrayLoaderClassDummy::class));
         $object = $app->get(PhpArrayLoaderClassDummy::class);
 
-        $this->assertInstanceOf(PhpArrayLoaderClassDummy::class, $object);
+        static::assertInstanceOf(PhpArrayLoaderClassDummy::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canLoadContainerWithMoreThanOneServiceFile(): void
+    public function testCanLoadContainerWithMoreThanOneServiceFile(): void
     {
         $adapter = (new AdapterBuilder())->build(PHPArrayAdapter::class);
 
@@ -69,14 +67,14 @@ final class WorkflowTest extends TestCase
 
         $app = AppContainer::initialize($classContainer, $objectContainer);
 
-        $this->assertTrue($app->has(PhpArrayLoaderClassDummy::class));
+        static::assertTrue($app->has(PhpArrayLoaderClassDummy::class));
         $object = $app->get(PhpArrayLoaderClassDummy::class);
 
-        $this->assertInstanceOf(PhpArrayLoaderClassDummy::class, $object);
+        static::assertInstanceOf(PhpArrayLoaderClassDummy::class, $object);
 
-        $this->assertTrue($app->has(Factory::class));
+        static::assertTrue($app->has(Factory::class));
         $object = $app->get(Factory::class);
 
-        $this->assertInstanceOf(Factory::class, $object);
+        static::assertInstanceOf(Factory::class, $object);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests;
@@ -14,6 +15,10 @@ use Psr\Container\ContainerInterface;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
+ *
+ * @internal
+ *
+ * @coversNothing
  */
 final class AppContainerTest extends TestCase
 {
@@ -27,172 +32,164 @@ final class AppContainerTest extends TestCase
      */
     private MockObject $objectContainer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->classContainer = $this->createMock(ClassContainerInterface::class);
         $this->objectContainer = $this->createMock(ContainerInterface::class);
     }
 
-    /**
-     * @test
-     */
-    public function canInitializeMainContainer(): void
+    public function testCanInitializeMainContainer(): void
     {
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
-        $this->assertInstanceOf(AppContainer::class, $container);
+        static::assertInstanceOf(AppContainer::class, $container);
     }
 
-    /**
-     * @test
-     */
-    public function throwAnExceptionBecauseTheContainerHasNoServiceWithGivenId(): void
+    public function testThrowAnExceptionBecauseTheContainerHasNoServiceWithGivenId(): void
     {
         $this->expectException(NotFoundInContainerException::class);
         $this->expectExceptionMessage('Can not found a entry in container with given id "test"');
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
         $container->get('test');
     }
 
-    /**
-     * @test
-     */
-    public function throwAnExceptionBecauseTheContainerCannotRetrieveTheRequestedService(): void
+    public function testThrowAnExceptionBecauseTheContainerCannotRetrieveTheRequestedService(): void
     {
-        $dummy = new class () {};
+        $dummy = new class() {};
 
         $this->expectException(CannotRetrieveException::class);
         $this->expectExceptionMessage(sprintf('Cannot initialize object "%s"', $dummy::class));
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with($dummy::class)
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $item = ClassItem::create($dummy::class, []);
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($item);
+            ->willReturn($item)
+        ;
 
         $this->objectContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willThrowException(NotFoundInContainerException::create($dummy::class));
+            ->willThrowException(NotFoundInContainerException::create($dummy::class))
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
         $object = $container->get($dummy::class);
     }
 
-    /**
-     * @test
-     */
-    public function canGetAService(): void
+    public function testCanGetAService(): void
     {
-        $dummy = new class () {};
+        $dummy = new class() {};
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with($dummy::class)
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $item = ClassItem::create($dummy::class, []);
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($item);
+            ->willReturn($item)
+        ;
 
         $this->objectContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($dummy);
+            ->willReturn($dummy)
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
         $object = $container->get($dummy::class);
 
-        $this->assertEquals($dummy, $object);
+        static::assertSame($dummy, $object);
     }
 
-    /**
-     * @test
-     */
-    public function givenIdDoNotExist(): void
+    public function testGivenIdDoNotExist(): void
     {
         $this->objectContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
-        $this->assertFalse($container->has('test'));
+        static::assertFalse($container->has('test'));
     }
 
-    /**
-     * @test
-     */
-    public function givenIdExistInObjectContainer(): void
+    public function testGivenIdExistInObjectContainer(): void
     {
         $this->objectContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $this->classContainer
-            ->expects(self::never())
+            ->expects(static::never())
             ->method('has')
-            ->with('test');
+            ->with('test')
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
-        $this->assertTrue($container->has('test'));
+        static::assertTrue($container->has('test'));
     }
 
-    /**
-     * @test
-     */
-    public function givenIdExistInClassContainer(): void
+    public function testGivenIdExistInClassContainer(): void
     {
         $this->objectContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->classContainer
-            ->expects(self::once())
+            ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
-        $this->assertTrue($container->has('test'));
+        static::assertTrue($container->has('test'));
     }
 }

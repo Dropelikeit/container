@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
@@ -11,8 +12,8 @@ use Psr\Container\ContainerInterface;
 final class AppContainer implements ContainerInterface
 {
     private function __construct(
-        private /*readonly*/ ClassContainerInterface $classContainer,
-        private /*readonly*/ ContainerInterface $objectContainer,
+        private /* readonly */ ClassContainerInterface $classContainer,
+        private /* readonly */ ContainerInterface $objectContainer,
     ) {
     }
 

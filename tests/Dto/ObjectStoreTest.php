@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Dto\Container;
@@ -7,54 +8,47 @@ use MarcelStrahl\Container\Dto\ObjectStore;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class ObjectStoreTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function canInitialize(): void
+    public function testCanInitialize(): void
     {
         $store = ObjectStore::create();
 
-        $this->assertInstanceOf(ObjectStoreInterface::class, $store);
+        static::assertInstanceOf(ObjectStoreInterface::class, $store);
     }
 
-    /**
-     * @test
-     */
-    public function canStoreObject(): void
+    public function testCanStoreObject(): void
     {
         $dummyClass = new class() {};
 
         $store = ObjectStore::create();
 
-        $store->append($dummyClass::class, new $dummyClass);
+        $store->append($dummyClass::class, new $dummyClass());
 
         $object = $store->searchById($dummyClass::class);
 
-        $this->assertInstanceOf($dummyClass::class, $object);
+        static::assertInstanceOf($dummyClass::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canSearchById(): void
+    public function testCanSearchById(): void
     {
         $dummyClass = new class() {};
 
         $store = ObjectStore::create();
 
-        $store->append($dummyClass::class, new $dummyClass);
+        $store->append($dummyClass::class, new $dummyClass());
 
         $object = $store->searchById($dummyClass::class);
 
-        $this->assertInstanceOf($dummyClass::class, $object);
+        static::assertInstanceOf($dummyClass::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canNotFindAnObjectWithGivenId(): void
+    public function testCanNotFindAnObjectWithGivenId(): void
     {
         $dummyClass = new class() {};
 
@@ -62,6 +56,6 @@ final class ObjectStoreTest extends TestCase
 
         $object = $store->searchById($dummyClass::class);
 
-        $this->assertNull($object);
+        static::assertNull($object);
     }
 }

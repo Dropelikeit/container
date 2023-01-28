@@ -1,13 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception\ObjectBuilder;
 
-use LogicException;
-
-use function sprintf;
-
-final class CanNotCreateClassWithNoneClassDependencies extends LogicException
+final class CanNotCreateClassWithNoneClassDependencies extends \LogicException
 {
     /**
      * @psalm-param non-empty-string $type

@@ -1,9 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
-
-use function in_array;
 
 final class ObjectStoreItem
 {
@@ -13,12 +12,13 @@ final class ObjectStoreItem
      * @psalm-param list<class-string> $abstracts
      */
     private function __construct(
-        private /*readonly*/ string $id,
-        private /*readonly*/ string $class,
-        private /*readonly*/ object $instance,
-        private /*readonly*/ array  $interfaces,
-        private /*readonly*/ array  $abstracts,
-    ) {}
+        private /* readonly */ string $id,
+        private /* readonly */ string $class,
+        private /* readonly */ object $instance,
+        private /* readonly */ array $interfaces,
+        private /* readonly */ array $abstracts,
+    ) {
+    }
 
     /**
      * @psalm-param string|class-string $id
@@ -75,11 +75,11 @@ final class ObjectStoreItem
 
     private function searchByInterface(string $interface): bool
     {
-        return in_array($interface, $this->interfaces, true);
+        return \in_array($interface, $this->interfaces, true);
     }
 
     private function searchByAbstract(string $abstract): bool
     {
-        return in_array($abstract, $this->abstracts, true);
+        return \in_array($abstract, $this->abstracts, true);
     }
 }

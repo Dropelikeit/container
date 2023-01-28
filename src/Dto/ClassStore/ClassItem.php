@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto\ClassStore;
@@ -12,7 +13,8 @@ final class ClassItem implements ClassItemInterface
         private string $id,
         private string $alias,
         private string $factory
-    ) {}
+    ) {
+    }
 
     /**
      * @psalm-param non-empty-string $class
@@ -41,7 +43,7 @@ final class ClassItem implements ClassItemInterface
 
     public function hasFactory(): bool
     {
-        return $this->factory !== '';
+        return '' !== $this->factory;
     }
 
     public function getFactory(): string

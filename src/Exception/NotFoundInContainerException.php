@@ -1,19 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception;
 
-use LogicException;
 use Psr\Container\NotFoundExceptionInterface;
-use RuntimeException;
 use Webmozart\Assert\Assert;
 
-final class NotFoundInContainerException extends RuntimeException implements NotFoundExceptionInterface
+final class NotFoundInContainerException extends \RuntimeException implements NotFoundExceptionInterface
 {
     /**
      * @psalm-param class-string $id
      */
-    public static function create(string $id, ?LogicException $previousException = null): self
+    public static function create(string $id, ?\LogicException $previousException = null): self
     {
         $message = sprintf('Can not found a entry in container with given id "%s"', $id);
         Assert::stringNotEmpty($message);

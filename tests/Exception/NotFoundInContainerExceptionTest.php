@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Exception;
@@ -6,16 +7,15 @@ namespace MarcelStrahl\Tests\Exception;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\NotFoundExceptionInterface;
-use RuntimeException;
 
-use function sprintf;
-
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class NotFoundInContainerExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function canInitialize(): void
+    public function testCanInitialize(): void
     {
         $dummy = new class() {};
 
@@ -26,9 +26,9 @@ final class NotFoundInContainerExceptionTest extends TestCase
 
         $exception = NotFoundInContainerException::create($dummy::class, null);
 
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame(500, $exception->getCode());
-        $this->assertInstanceOf(RuntimeException::class, $exception);
-        $this->assertInstanceOf(NotFoundExceptionInterface::class, $exception);
+        static::assertSame($message, $exception->getMessage());
+        static::assertSame(500, $exception->getCode());
+        static::assertInstanceOf(\RuntimeException::class, $exception);
+        static::assertInstanceOf(NotFoundExceptionInterface::class, $exception);
     }
 }

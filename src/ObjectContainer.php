@@ -1,20 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
 
-use LogicException;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
+use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use Psr\Container\ContainerInterface;
 
 final class ObjectContainer implements ContainerInterface
 {
     public function __construct(
-        private /*readonly*/ ObjectStoreInterface $objectStore,
-        private /*readonly*/ ObjectBuilder $builder,
-    ) {}
+        private /* readonly */ ObjectStoreInterface $objectStore,
+        private /* readonly */ ObjectBuilder $builder,
+    ) {
+    }
 
     /**
      * @param class-string $id
@@ -22,13 +23,13 @@ final class ObjectContainer implements ContainerInterface
     public function get(string $id): object
     {
         $object = $this->objectStore->searchById($id);
-        if ($object !== null) {
+        if (null !== $object) {
             return $object;
         }
 
         try {
             $object = $this->builder->initialize($id);
-        } catch (LogicException $exception) {
+        } catch (\LogicException $exception) {
             throw NotFoundInContainerException::create($id, $exception);
         }
 
@@ -42,6 +43,6 @@ final class ObjectContainer implements ContainerInterface
      */
     public function has(string $id): bool
     {
-        return $this->objectStore->searchById($id) !== null;
+        return null !== $this->objectStore->searchById($id);
     }
 }

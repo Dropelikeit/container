@@ -1,17 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception;
 
-use RuntimeException;
 use Webmozart\Assert\Assert;
-
-use function sprintf;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
  */
-final class NonExistingFileException extends RuntimeException
+final class NonExistingFileException extends \RuntimeException
 {
     /**
      * @psalm-param non-empty-string $file

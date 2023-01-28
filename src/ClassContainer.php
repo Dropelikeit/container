@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
@@ -10,6 +11,7 @@ use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 final class ClassContainer implements ClassContainerInterface
 {
     private bool $compiled;
+
     private function __construct(private ClassStoreInterface $classes)
     {
         $this->compiled = false;
@@ -17,7 +19,7 @@ final class ClassContainer implements ClassContainerInterface
 
     public static function create(ClassStoreInterface $classStore): self
     {
-        return new self(classes: $classStore,);
+        return new self(classes: $classStore);
     }
 
     public function append(ClassItemInterface $classItem): void

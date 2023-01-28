@@ -1,18 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\FileLoader;
 
 use MarcelStrahl\Container\Dto\ClassStore;
 use MarcelStrahl\Container\Dto\ClassStoreInterface;
-
 use MarcelStrahl\Container\Exception\NonExistingFileException;
 use MarcelStrahl\Container\Exception\UnknownFileExtensionException;
-
-use function file_exists;
-use function str_contains;
-use function array_walk;
-use function call_user_func_array;
 
 final class PHPArrayAdapter implements FileLoader
 {
@@ -44,7 +39,7 @@ final class PHPArrayAdapter implements FileLoader
         array_walk(
             $paths,
             static function (string $path) use ($instance, $classStore): void {
-                call_user_func_array([$instance, 'loadFileFromPath'], [$path, $classStore]);
+                \call_user_func_array([$instance, 'loadFileFromPath'], [$path, $classStore]);
             }
         );
 

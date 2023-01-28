@@ -1,32 +1,28 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\ObjectBuilder;
 
-use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
-use ReflectionClass;
-use ReflectionException;
-
 use ReflectionParameter;
-use function class_exists;
 
 final class ReflectionBuilder implements ObjectBuilder
 {
     public function initialize(string $class): object
     {
         try {
-            $reflectionClass = new ReflectionClass($class);
-        } catch (ReflectionException $exception) {
-            throw new LogicException('Cannot find your class, try `composer dumpautoload` command.');
+            $reflectionClass = new \ReflectionClass($class);
+        } catch (\ReflectionException $exception) {
+            throw new \LogicException('Cannot find your class, try `composer dumpautoload` command.');
         }
 
         $parameters = $reflectionClass->getConstructor()?->getParameters();
 
         // Current class has no constructor and can initialize directly, or it has a constructor but no dependencies.
         if (
-            $parameters === null
-            || $parameters === []
+            null === $parameters
+            || [] === $parameters
         ) {
             return new $class();
         }
@@ -39,7 +35,8 @@ final class ReflectionBuilder implements ObjectBuilder
     }
 
     /**
-     * @param array<int, ReflectionParameter> $parameters
+     * @param array<int, \ReflectionParameter> $parameters
+     *
      * @psalm-param list<ReflectionParameter> $parameters
      *
      * @return array<string, object>

@@ -1,13 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception;
 
-use LogicException;
-
-use function sprintf;
-
-final class NotInitializedException extends LogicException
+final class NotInitializedException extends \LogicException
 {
     /**
      * @param class-string $class

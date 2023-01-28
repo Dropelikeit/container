@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
 
 use Webmozart\Assert\Assert;
 
-use function class_implements;
-use function class_parents;
-
 final class ObjectStore implements ObjectStoreInterface
 {
     /**
      * @param list<ObjectStoreItem> $objects
      */
-    private function __construct(private array $objects = []) {}
+    private function __construct(private array $objects = [])
+    {
+    }
 
     public static function create(): ObjectStoreInterface
     {
@@ -40,7 +40,7 @@ final class ObjectStore implements ObjectStoreInterface
     {
         foreach ($this->objects as $object) {
             $object = $object->searchByGivenId($class);
-            if ($object !== null) {
+            if (null !== $object) {
                 return $object;
             }
         }

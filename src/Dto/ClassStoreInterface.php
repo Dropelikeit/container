@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
 
 use MarcelStrahl\Container\Dto\ClassStore\ClassItemInterface;
-use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 
 interface ClassStoreInterface
 {
@@ -18,6 +18,7 @@ interface ClassStoreInterface
 
     /**
      * @psalm-param class-string $id
+     *
      * @psalm-return ''|class-string
      */
     public function searchById(string $id): ?ClassItemInterface;

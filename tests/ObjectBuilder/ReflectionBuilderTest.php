@@ -1,72 +1,62 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Container\ObjectBuilder;
 
-use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
+use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
+use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithConstructorAndNonClassDependency;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithConstructorAndOneDependency;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithConstructorButWithoutDependencies;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
-use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class ReflectionBuilderTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function canInitialize(): void
+    public function testCanInitialize(): void
     {
         $builder = new ReflectionBuilder();
 
-        $this->assertInstanceOf(ObjectBuilder::class, $builder);
+        static::assertInstanceOf(ObjectBuilder::class, $builder);
     }
 
-    /**
-     * @test
-     */
-    public function canInitializeSimpleClassWithoutConstructor(): void
+    public function testCanInitializeSimpleClassWithoutConstructor(): void
     {
         $builder = new ReflectionBuilder();
 
         $object = $builder->initialize(SimpleTestServiceWithoutConstructor::class);
 
-        $this->assertInstanceOf(SimpleTestServiceWithoutConstructor::class, $object);
+        static::assertInstanceOf(SimpleTestServiceWithoutConstructor::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canInitializeSimpleClassWithConstructorButWithoutDependencies(): void
+    public function testCanInitializeSimpleClassWithConstructorButWithoutDependencies(): void
     {
         $builder = new ReflectionBuilder();
 
         $object = $builder->initialize(SimpleTestServiceWithConstructorButWithoutDependencies::class);
 
-        $this->assertInstanceOf(SimpleTestServiceWithConstructorButWithoutDependencies::class, $object);
+        static::assertInstanceOf(SimpleTestServiceWithConstructorButWithoutDependencies::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canInitializeSimpleClassWithConstructorAndOneDependency(): void
+    public function testCanInitializeSimpleClassWithConstructorAndOneDependency(): void
     {
         $builder = new ReflectionBuilder();
 
         $object = $builder->initialize(SimpleTestServiceWithConstructorAndOneDependency::class);
 
-        $this->assertInstanceOf(SimpleTestServiceWithConstructorAndOneDependency::class, $object);
+        static::assertInstanceOf(SimpleTestServiceWithConstructorAndOneDependency::class, $object);
     }
 
-    /**
-     * @test
-     */
-    public function canNotInitializeNonExistingClass(): void
+    public function testCanNotInitializeNonExistingClass(): void
     {
-        $this->expectException(LogicException::class);
+        $this->expectException(\LogicException::class);
         $this->expectErrorMessage('Cannot find your class, try `composer dumpautoload` command.');
 
         $builder = new ReflectionBuilder();
@@ -74,10 +64,7 @@ final class ReflectionBuilderTest extends TestCase
         $builder->initialize('X\Dummy\Namespace\Class');
     }
 
-    /**
-     * @test
-     */
-    public function canNotInitializeNonClassDependency(): void
+    public function testCanNotInitializeNonClassDependency(): void
     {
         $this->expectException(CanNotCreateClassWithNoneClassDependencies::class);
         $this->expectErrorMessage('Currently, no object can be created with non-class dependencies, given type "int".');

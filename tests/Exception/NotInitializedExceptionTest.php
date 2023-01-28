@@ -1,20 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Exception;
 
-use LogicException;
 use MarcelStrahl\Container\Exception\NotInitializedException;
 use PHPUnit\Framework\TestCase;
 
-use function sprintf;
-
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 final class NotInitializedExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function canInitialize(): void
+    public function testCanInitialize(): void
     {
         $dummy = new class() {};
 
@@ -25,8 +25,8 @@ final class NotInitializedExceptionTest extends TestCase
 
         $exception = NotInitializedException::create($dummy::class);
 
-        $this->assertSame($message, $exception->getMessage());
-        $this->assertSame(0, $exception->getCode());
-        $this->assertInstanceOf(LogicException::class, $exception);
+        static::assertSame($message, $exception->getMessage());
+        static::assertSame(0, $exception->getCode());
+        static::assertInstanceOf(\LogicException::class, $exception);
     }
 }
