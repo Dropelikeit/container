@@ -10,7 +10,8 @@ use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 final class ClassContainer implements ClassContainerInterface
 {
     private bool $compiled;
-    private function __construct(private ClassStoreInterface $classes) {
+    private function __construct(private ClassStoreInterface $classes)
+    {
         $this->compiled = false;
     }
 
@@ -37,12 +38,14 @@ final class ClassContainer implements ClassContainerInterface
     /**
      * @psalm-param class-string $id
      */
-    public function get(string $id)
+    public function get(string $id): ClassItemInterface
     {
-        $class = $this->classes->searchById($id);
-        if ($class === '') {
+        $metadata = $this->classes->searchById($id);
+        if (!$metadata instanceof ClassItemInterface) {
             throw NotFoundInContainerException::create($id, null);
         }
+
+        return $metadata;
     }
 
     /**

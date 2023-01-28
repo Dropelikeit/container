@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MarcelStrahl\Tests\Container;
+namespace MarcelStrahl\Tests;
 
 use LogicException;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;

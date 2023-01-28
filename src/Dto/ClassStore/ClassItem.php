@@ -16,22 +16,15 @@ final class ClassItem implements ClassItemInterface
 
     /**
      * @psalm-param non-empty-string $class
+     * @psalm-param array{id?: non-empty-string, alias?: class-string, factory?: class-string} $classInformation
      */
     public static function create(string $class, array $classInformation): self
     {
         Assert::classExists($class);
 
-        $serviceId = $classInformation['id'] ?? '';
-        $alias = $classInformation['alias'] ?? '';
+        $serviceId = $classInformation['id'] ??= $class;
+        $alias = $classInformation['alias'] ??= $class;
         $factory = $classInformation['factory'] ?? '';
-
-        if ($serviceId === '') {
-            $serviceId = $class;
-        }
-
-        if ($alias === '') {
-            $alias = $class;
-        }
 
         return new self($class, $serviceId, $alias, $factory);
     }

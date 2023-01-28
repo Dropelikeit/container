@@ -77,7 +77,7 @@ final class ClassContainerTest extends TestCase
         $this->classStore
             ->expects(self::once())
             ->method('append')
-            ->with($dummy::class, $dummy::class);
+            ->with($classItem);
 
         $this->classStore
             ->expects(self::once())
@@ -99,19 +99,21 @@ final class ClassContainerTest extends TestCase
 
         $dummy = new class() {};
 
+        $classItem = ClassItem::create($dummy::class, []);
+
         $this->classStore
             ->expects(self::once())
             ->method('append')
-            ->with($dummy::class, $dummy::class);
+            ->with($classItem);
 
         $this->classStore
             ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
-            ->willReturn('');
+            ->willReturn(null);
 
         $container = ClassContainer::create($this->classStore);
-        $container->append($dummy::class, $dummy::class);
+        $container->append($classItem);
         $container->get($dummy::class);
     }
 

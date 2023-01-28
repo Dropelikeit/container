@@ -20,7 +20,7 @@ interface ClassStoreInterface
      * @psalm-param class-string $id
      * @psalm-return ''|class-string
      */
-    public function searchById(string $id): string;
+    public function searchById(string $id): ?ClassItemInterface;
 
     /**
      * @psalm-param class-string $id

@@ -29,16 +29,15 @@ final class ClassStore implements ClassStoreInterface
 
     /**
      * @psalm-param class-string $id
-     * @psalm-return ''|class-string
      */
-    public function searchById(string $id): string
+    public function searchById(string $id): ?ClassItemInterface
     {
         $classItem = $this->classes[$id] ?? null;
         if ($classItem instanceof ClassItemInterface) {
-            return $classItem->getClass();
+            return $classItem;
         }
 
-        return $this->matchClassItemById($id)?->getClass() ?? '';
+        return $this->matchClassItemById($id);
     }
 
     /**
@@ -57,7 +56,6 @@ final class ClassStore implements ClassStoreInterface
         foreach ($this->classes as $classItem) {
             if (
                 $classItem->getId() === $id
-                || $classItem->getAlias() === $id
                 || $classItem->getClass() === $id
             ) {
                 return $classItem;

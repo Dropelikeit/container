@@ -5,7 +5,9 @@ namespace MarcelStrahl\Tests\Dto;
 
 use InvalidArgumentException;
 use MarcelStrahl\Container\Dto\ClassStore;
+use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
 use MarcelStrahl\Container\Dto\ClassStoreInterface;
+use MarcelStrahl\Tests\FileLoader\data\AliasInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ClassStoreTest extends TestCase
@@ -27,8 +29,10 @@ final class ClassStoreTest extends TestCase
     {
         $dummy = new class() {};
 
+        $classItem = ClassItem::create($dummy::class, []);
+
         $store = ClassStore::create();
-        $store->append($dummy::class, $dummy::class);
+        $store->append($classItem);
 
         $this->assertTrue($store->hasEntry($dummy::class));
     }
@@ -36,27 +40,16 @@ final class ClassStoreTest extends TestCase
     /**
      * @test
      */
-    public function canNotAppendNewEntryToStoreBecauseIdIsNotAClass(): void
+    public function canAppendToStoreByAlias(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-
         $dummy = new class() {};
 
-        $store = ClassStore::create();
-        $store->append('x', $dummy::class);
-    }
-
-    /**
-     * @test
-     */
-    public function canNotAppendNewEntryToStoreBecauseClassArgumentIsNotAClass(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $dummy = new class() {};
+        $classItem = ClassItem::create($dummy::class, ['alias' => AliasInterface::class]);
 
         $store = ClassStore::create();
-        $store->append($dummy::class, 'x');
+        $store->append($classItem);
+
+        $this->assertTrue($store->hasEntry($dummy::class));
     }
 
     /**
@@ -66,12 +59,14 @@ final class ClassStoreTest extends TestCase
     {
         $dummy = new class() {};
 
+        $classItem = ClassItem::create($dummy::class, []);
+
         $store = ClassStore::create();
-        $store->append($dummy::class, $dummy::class);
+        $store->append($classItem);
 
-        $class = $store->searchById($dummy::class);
+        $metaData = $store->searchById($dummy::class);
 
-        $this->assertSame($dummy::class, $class);
+        $this->assertSame($classItem, $metaData);
     }
 
     /**
@@ -83,38 +78,9 @@ final class ClassStoreTest extends TestCase
 
         $store = ClassStore::create();
 
-        $class = $store->searchById($dummy::class);
+        $metadata = $store->searchById($dummy::class);
 
-        $this->assertSame('', $class);
-    }
-
-    /**
-     * @test
-     */
-    public function canSearchByValueSuccessful(): void
-    {
-        $dummy = new class() {};
-
-        $store = ClassStore::create();
-        $store->append($dummy::class, $dummy::class);
-
-        $class = $store->searchByValue($dummy::class);
-
-        $this->assertSame($dummy::class, $class);
-    }
-
-    /**
-     * @test
-     */
-    public function canNotSearchByValueSuccessful(): void
-    {
-        $dummy = new class() {};
-
-        $store = ClassStore::create();
-
-        $class = $store->searchByValue($dummy::class);
-
-        $this->assertSame('', $class);
+        $this->assertNull($metadata);
     }
 
     /**
@@ -124,8 +90,10 @@ final class ClassStoreTest extends TestCase
     {
         $dummy = new class() {};
 
+        $classItem = ClassItem::create($dummy::class, []);
+
         $store = ClassStore::create();
-        $store->append($dummy::class, $dummy::class);
+        $store->append($classItem);
 
         $result = $store->hasEntry($dummy::class);
 
