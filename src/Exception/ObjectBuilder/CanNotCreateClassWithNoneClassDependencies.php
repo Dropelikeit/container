@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception\ObjectBuilder;
 
-final class CanNotCreateClassWithNoneClassDependencies extends \LogicException
+use LogicException;
+
+final class CanNotCreateClassWithNoneClassDependencies extends LogicException
 {
-    /**
-     * @psalm-param non-empty-string $type
-     */
     public static function create(string $type): self
     {
         return new self(sprintf(

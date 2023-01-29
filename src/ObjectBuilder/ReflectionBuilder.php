@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\ObjectBuilder;
 
+use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
+use ReflectionClass;
+use ReflectionException;
 use ReflectionParameter;
+use Webmozart\Assert\Assert;
 
 final class ReflectionBuilder implements ObjectBuilder
 {
     public function initialize(string $class): object
     {
         try {
-            $reflectionClass = new \ReflectionClass($class);
-        } catch (\ReflectionException $exception) {
-            throw new \LogicException('Cannot find your class, try `composer dumpautoload` command.');
+            $reflectionClass = new ReflectionClass($class);
+        } catch (ReflectionException $exception) {
+            throw new LogicException('Cannot find your class, try `composer dumpautoload` command.');
         }
+
+        Assert::classExists($class);
 
         $parameters = $reflectionClass->getConstructor()?->getParameters();
 
@@ -35,7 +41,7 @@ final class ReflectionBuilder implements ObjectBuilder
     }
 
     /**
-     * @param array<int, \ReflectionParameter> $parameters
+     * @param array<int, ReflectionParameter> $parameters
      *
      * @psalm-param list<ReflectionParameter> $parameters
      *

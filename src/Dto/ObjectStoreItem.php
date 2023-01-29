@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
 
+use function in_array;
+
 final class ObjectStoreItem
 {
     /**
@@ -21,7 +23,6 @@ final class ObjectStoreItem
     }
 
     /**
-     * @psalm-param string|class-string $id
      * @psalm-param class-string $class
      * @psalm-param list<class-string> $interfaces
      * @psalm-param list<class-string> $abstracts
@@ -75,11 +76,11 @@ final class ObjectStoreItem
 
     private function searchByInterface(string $interface): bool
     {
-        return \in_array($interface, $this->interfaces, true);
+        return in_array($interface, $this->interfaces, true);
     }
 
     private function searchByAbstract(string $abstract): bool
     {
-        return \in_array($abstract, $this->abstracts, true);
+        return in_array($abstract, $this->abstracts, true);
     }
 }

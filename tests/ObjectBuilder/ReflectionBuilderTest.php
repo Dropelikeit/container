@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Tests\Container\ObjectBuilder;
+namespace MarcelStrahl\Tests\ObjectBuilder;
 
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
@@ -16,7 +16,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @coversNothing
  */
 final class ReflectionBuilderTest extends TestCase
 {

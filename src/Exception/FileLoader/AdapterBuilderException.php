@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception\FileLoader;
 
+use RuntimeException;
 use Webmozart\Assert\Assert;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
  */
-final class AdapterBuilderException extends \RuntimeException
+final class AdapterBuilderException extends RuntimeException
 {
     public static function createByUnknownAdapterType(string $adapter): self
     {

@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @coversNothing
  */
 final class ClassContainerTest extends TestCase
 {

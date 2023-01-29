@@ -11,7 +11,7 @@ use Psr\Container\NotFoundExceptionInterface;
 /**
  * @internal
  *
- * @coversNothing
+
  */
 final class NotFoundInContainerExceptionTest extends TestCase
 {

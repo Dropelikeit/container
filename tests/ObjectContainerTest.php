@@ -15,7 +15,6 @@ use Psr\Container\ContainerInterface;
 /**
  * @internal
  *
- * @coversNothing
  */
 final class ObjectContainerTest extends TestCase
 {

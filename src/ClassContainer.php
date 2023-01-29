@@ -37,9 +37,6 @@ final class ClassContainer implements ClassContainerInterface
         $this->compiled = true;
     }
 
-    /**
-     * @psalm-param class-string $id
-     */
     public function get(string $id): ClassItemInterface
     {
         $metadata = $this->classes->searchById($id);
@@ -50,9 +47,6 @@ final class ClassContainer implements ClassContainerInterface
         return $metadata;
     }
 
-    /**
-     * @psalm-param class-string $id
-     */
     public function has(string $id): bool
     {
         return $this->classes->hasEntry($id);

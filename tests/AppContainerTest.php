@@ -18,7 +18,6 @@ use Psr\Container\ContainerInterface;
  *
  * @internal
  *
- * @coversNothing
  */
 final class AppContainerTest extends TestCase
 {

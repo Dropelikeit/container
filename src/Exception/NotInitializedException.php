@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception;
 
-final class NotInitializedException extends \LogicException
+use LogicException;
+
+final class NotInitializedException extends LogicException
 {
     /**
      * @param class-string $class

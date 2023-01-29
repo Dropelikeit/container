@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
 
+use LogicException;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
@@ -17,9 +18,6 @@ final class ObjectContainer implements ContainerInterface
     ) {
     }
 
-    /**
-     * @param class-string $id
-     */
     public function get(string $id): object
     {
         $object = $this->objectStore->searchById($id);
@@ -29,7 +27,7 @@ final class ObjectContainer implements ContainerInterface
 
         try {
             $object = $this->builder->initialize($id);
-        } catch (\LogicException $exception) {
+        } catch (LogicException $exception) {
             throw NotFoundInContainerException::create($id, $exception);
         }
 
@@ -38,9 +36,6 @@ final class ObjectContainer implements ContainerInterface
         return $object;
     }
 
-    /**
-     * @param class-string $id
-     */
     public function has(string $id): bool
     {
         return null !== $this->objectStore->searchById($id);

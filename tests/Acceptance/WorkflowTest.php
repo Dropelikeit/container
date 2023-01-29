@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
  *
  * @internal
  *
- * @coversNothing
+
  */
 final class WorkflowTest extends TestCase
 {

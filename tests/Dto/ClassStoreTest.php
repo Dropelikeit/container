@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  *
- * @coversNothing
+
  */
 final class ClassStoreTest extends TestCase
 {

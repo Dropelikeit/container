@@ -17,8 +17,6 @@ use Webmozart\Assert\Assert;
  * @author Marcel Strahl <info@marcel-strahl.de>
  *
  * @internal
- *
- * @coversNothing
  */
 final class PhpArrayAdapterTest extends TestCase
 {

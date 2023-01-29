@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Exception;
 
+use RuntimeException;
 use Webmozart\Assert\Assert;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
  */
-final class UnknownFileExtensionException extends \RuntimeException
+final class UnknownFileExtensionException extends RuntimeException
 {
     /**
      * @psalm-param non-empty-string $path
