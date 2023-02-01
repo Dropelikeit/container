@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\ObjectBuilder;
 
+use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
@@ -55,7 +56,7 @@ final class ReflectionBuilderTest extends TestCase
 
     public function testCanNotInitializeNonExistingClass(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectErrorMessage('Cannot find your class, try `composer dumpautoload` command.');
 
         $builder = new ReflectionBuilder();
@@ -71,5 +72,22 @@ final class ReflectionBuilderTest extends TestCase
         $builder = new ReflectionBuilder();
 
         $builder->initialize(SimpleTestServiceWithConstructorAndNonClassDependency::class);
+    }
+
+    /**
+     * @test
+     */
+    public function throwLogicExceptionWhenReflectionBuilderIsPassedCallables(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->expectErrorMessage('callables are not yet supported.');
+
+        $closure = static function (): string {
+            return 'dummy';
+        };
+
+        $builder = new ReflectionBuilder();
+
+        $builder->initialize($closure);
     }
 }

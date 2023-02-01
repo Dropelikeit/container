@@ -11,10 +11,17 @@ use ReflectionException;
 use ReflectionParameter;
 use Webmozart\Assert\Assert;
 
+use function is_callable;
+use function class_exists;
+
 final class ReflectionBuilder implements ObjectBuilder
 {
-    public function initialize(string $class): object
+    public function initialize(callable|string $class): object
     {
+        if (is_callable($class)) {
+            throw new LogicException('callables are not yet supported.');
+        }
+
         try {
             $reflectionClass = new ReflectionClass($class);
         } catch (ReflectionException $exception) {

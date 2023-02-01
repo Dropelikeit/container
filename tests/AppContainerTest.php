@@ -9,6 +9,9 @@ use MarcelStrahl\Container\ClassContainerInterface;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
 use MarcelStrahl\Container\Exception\CannotRetrieveException;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
+use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
+use MarcelStrahl\Tests\ObjectBuilder\_data\Factory\FactoryWithInvoke;
+use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -17,7 +20,6 @@ use Psr\Container\ContainerInterface;
  * @author Marcel Strahl <info@marcel-strahl.de>
  *
  * @internal
- *
  */
 final class AppContainerTest extends TestCase
 {
@@ -53,8 +55,7 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
@@ -63,7 +64,8 @@ final class AppContainerTest extends TestCase
 
     public function testThrowAnExceptionBecauseTheContainerCannotRetrieveTheRequestedService(): void
     {
-        $dummy = new class() {};
+        $dummy = new class() {
+        };
 
         $this->expectException(CannotRetrieveException::class);
         $this->expectExceptionMessage(sprintf('Cannot initialize object "%s"', $dummy::class));
@@ -72,8 +74,7 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with($dummy::class)
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $item = ClassItem::create($dummy::class, []);
 
@@ -81,15 +82,13 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($item)
-        ;
+            ->willReturn($item);
 
         $this->objectContainer
             ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willThrowException(NotFoundInContainerException::create($dummy::class))
-        ;
+            ->willThrowException(NotFoundInContainerException::create($dummy::class));
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
@@ -98,14 +97,14 @@ final class AppContainerTest extends TestCase
 
     public function testCanGetAService(): void
     {
-        $dummy = new class() {};
+        $dummy = new class() {
+        };
 
         $this->classContainer
             ->expects(static::once())
             ->method('has')
             ->with($dummy::class)
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $item = ClassItem::create($dummy::class, []);
 
@@ -113,15 +112,13 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($item)
-        ;
+            ->willReturn($item);
 
         $this->objectContainer
             ->expects(static::once())
             ->method('get')
             ->with($dummy::class)
-            ->willReturn($dummy)
-        ;
+            ->willReturn($dummy);
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
@@ -136,15 +133,13 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $this->classContainer
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
@@ -157,14 +152,12 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->classContainer
             ->expects(static::never())
             ->method('has')
-            ->with('test')
-        ;
+            ->with('test');
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
@@ -177,18 +170,51 @@ final class AppContainerTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(false)
-        ;
+            ->willReturn(false);
 
         $this->classContainer
             ->expects(static::once())
             ->method('has')
             ->with('test')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
 
         static::assertTrue($container->has('test'));
+    }
+
+    /**
+     * @test
+     */
+    public function canGetServiceByFactory(): void
+    {
+        $object = new SimpleTestServiceWithoutConstructor();
+
+        $item = ClassItem::create(SimpleTestServiceWithoutConstructor::class, [
+            'factory' => FactoryWithInvoke::class,
+        ]);
+
+        $this->objectContainer
+            ->expects(static::once())
+            ->method('get')
+            ->with(FactoryWithInvoke::class)
+            ->willReturn($object);
+
+        $this->classContainer
+            ->expects(self::once())
+            ->method('get')
+            ->with(SimpleTestServiceWithoutConstructor::class)
+            ->willReturn($item);
+
+        $this->classContainer
+            ->expects(static::once())
+            ->method('has')
+            ->with(SimpleTestServiceWithoutConstructor::class)
+            ->willReturn(true);
+
+        $container = AppContainer::initialize($this->classContainer, $this->objectContainer);
+        $object = $container->get(SimpleTestServiceWithoutConstructor::class);
+
+        $this->assertInstanceOf(SimpleTestServiceWithoutConstructor::class, $object);
     }
 }

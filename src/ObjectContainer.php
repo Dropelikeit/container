@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MarcelStrahl\Container;
 
 use LogicException;
+use MarcelStrahl\Container\Delegator\DelegateInterface;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
@@ -14,7 +15,7 @@ final class ObjectContainer implements ContainerInterface
 {
     public function __construct(
         private /* readonly */ ObjectStoreInterface $objectStore,
-        private /* readonly */ ObjectBuilder $builder,
+        private /* readonly */ DelegateInterface $delegator,
     ) {
     }
 
@@ -26,7 +27,7 @@ final class ObjectContainer implements ContainerInterface
         }
 
         try {
-            $object = $this->builder->initialize($id);
+            $object = $this->delegator->delegate($id);
         } catch (LogicException $exception) {
             throw NotFoundInContainerException::create($id, $exception);
         }

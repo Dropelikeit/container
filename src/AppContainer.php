@@ -33,9 +33,14 @@ final class AppContainer implements ContainerInterface
         /** @var ClassItem $metadata */
         $metadata = $this->classContainer->get($id);
 
+        $class = $metadata->getClass();
+        if ($metadata->hasFactory()) {
+            $class = $metadata->getFactory();
+        }
+
         try {
-            return $this->objectContainer->get($metadata->getClass());
-        } catch (NotFoundInContainerException $exception) {
+            return $this->objectContainer->get($class);
+        } catch (NotFoundInContainerException) {
             throw CannotRetrieveException::create($metadata->getClass());
         }
     }

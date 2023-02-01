@@ -13,5 +13,5 @@ interface ObjectBuilder
      * @throws CanNotCreateClassWithNoneClassDependencies
      * @throws LogicException
      */
-    public function initialize(string $class): object;
+    public function initialize(callable|string $class): object;
 }

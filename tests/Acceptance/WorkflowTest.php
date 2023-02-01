@@ -6,14 +6,19 @@ namespace MarcelStrahl\Tests\Acceptance;
 
 use MarcelStrahl\Container\AppContainer;
 use MarcelStrahl\Container\ClassContainer;
+use MarcelStrahl\Container\Delegator\ObjectDelegator;
 use MarcelStrahl\Container\Dto\ClassStore;
 use MarcelStrahl\Container\Dto\ObjectStore;
 use MarcelStrahl\Container\FileLoader\AdapterBuilder;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
+use MarcelStrahl\Container\ObjectBuilder\FactoryBuilder;
+use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactory;
 use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use MarcelStrahl\Container\ObjectContainer;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummy;
+use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory;
+use PhpParser\BuilderFactory;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\Assert;
 
@@ -21,8 +26,6 @@ use Webmozart\Assert\Assert;
  * @author Marcel Strahl <info@marcel-strahl.de>
  *
  * @internal
- *
-
  */
 final class WorkflowTest extends TestCase
 {
@@ -33,14 +36,18 @@ final class WorkflowTest extends TestCase
         $path = sprintf('%s/../FileLoader/php_array_config.php', __DIR__);
         Assert::stringNotEmpty($path);
 
+        $builderFactory = new ObjectBuilderFactory();
+        $delegator = new ObjectDelegator($builderFactory);
+
         $classStore = $adapter->loadFileFromPath($path, ClassStore::create());
 
         $classContainer = ClassContainer::create($classStore);
         $classContainer->compile();
 
-        $objectContainer = new ObjectContainer(ObjectStore::create(), new ReflectionBuilder());
+        $objectContainer = new ObjectContainer(ObjectStore::create(), $delegator);
 
         $app = AppContainer::initialize($classContainer, $objectContainer);
+        $builderFactory->setContainer($app);
 
         static::assertTrue($app->has(PhpArrayLoaderClassDummy::class));
         $object = $app->get(PhpArrayLoaderClassDummy::class);
@@ -58,14 +65,19 @@ final class WorkflowTest extends TestCase
         $pathTwo = sprintf('%s/../FileLoader/array_config.php', __DIR__);
         Assert::stringNotEmpty($pathTwo);
 
+        $builderFactory = new ObjectBuilderFactory();
+        $delegator = new ObjectDelegator($builderFactory);
+
+
         $classStore = $adapter->loadFileFromPaths([$pathOne, $pathTwo], ClassStore::create());
 
         $classContainer = ClassContainer::create($classStore);
         $classContainer->compile();
 
-        $objectContainer = new ObjectContainer(ObjectStore::create(), new ReflectionBuilder());
+        $objectContainer = new ObjectContainer(ObjectStore::create(), $delegator);
 
         $app = AppContainer::initialize($classContainer, $objectContainer);
+        $builderFactory->setContainer($app);
 
         static::assertTrue($app->has(PhpArrayLoaderClassDummy::class));
         $object = $app->get(PhpArrayLoaderClassDummy::class);
@@ -75,6 +87,6 @@ final class WorkflowTest extends TestCase
         static::assertTrue($app->has(Factory::class));
         $object = $app->get(Factory::class);
 
-        static::assertInstanceOf(Factory::class, $object);
+        static::assertInstanceOf(PhpArrayLoaderClassDummyWithFactory::class, $object);
     }
 }

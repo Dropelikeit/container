@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests;
 
+use MarcelStrahl\Container\Delegator\DelegateInterface;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\ObjectContainer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -24,21 +24,21 @@ final class ObjectContainerTest extends TestCase
     private MockObject/* &ObjectStoreInterface */ $store;
 
     /**
-     * @psalm-var MockObject&ObjectBuilder
+     * @psalm-var MockObject&DelegateInterface
      */
-    private MockObject/* &ObjectBuilder */ $builder;
+    private MockObject/* &ObjectBuilder */ $delegator;
 
     protected function setUp(): void
     {
         $this->store = $this->createMock(ObjectStoreInterface::class);
-        $this->builder = $this->createMock(ObjectBuilder::class);
+        $this->delegator = $this->createMock(DelegateInterface::class);
     }
 
     public function testCanInitialize(): void
     {
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
-        static::assertInstanceOf(ContainerInterface::class, $container);
+        $this->assertInstanceOf(ContainerInterface::class, $container);
     }
 
     public function testCanGetObjectFromContainer(): void
@@ -52,7 +52,7 @@ final class ObjectContainerTest extends TestCase
             ->willReturn($dummy)
         ;
 
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
         $object = $container->get($dummy::class);
 
@@ -71,9 +71,9 @@ final class ObjectContainerTest extends TestCase
 
         $exception = new \LogicException();
 
-        $this->builder
+        $this->delegator
             ->expects(static::once())
-            ->method('initialize')
+            ->method('delegate')
             ->with($dummy::class)
             ->willThrowException($exception)
         ;
@@ -85,7 +85,7 @@ final class ObjectContainerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
         $object = $container->get($dummy::class);
 
@@ -96,9 +96,9 @@ final class ObjectContainerTest extends TestCase
     {
         $dummy = new class() {};
 
-        $this->builder
+        $this->delegator
             ->expects(static::once())
-            ->method('initialize')
+            ->method('delegate')
             ->with($dummy::class)
             ->willReturn($dummy)
         ;
@@ -116,9 +116,9 @@ final class ObjectContainerTest extends TestCase
             ->with($dummy::class, $dummy)
         ;
 
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
-        $object = $container->get($dummy::class);
+        $container->get($dummy::class);
 
         static::assertInstanceOf($dummy::class, $dummy);
     }
@@ -134,7 +134,7 @@ final class ObjectContainerTest extends TestCase
             ->willReturn($dummy)
         ;
 
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
         static::assertTrue($container->has($dummy::class));
     }
@@ -150,7 +150,7 @@ final class ObjectContainerTest extends TestCase
             ->willReturn(null)
         ;
 
-        $container = new ObjectContainer($this->store, $this->builder);
+        $container = new ObjectContainer($this->store, $this->delegator);
 
         static::assertFalse($container->has($dummy::class));
     }
