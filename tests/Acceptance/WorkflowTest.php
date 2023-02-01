@@ -11,14 +11,11 @@ use MarcelStrahl\Container\Dto\ClassStore;
 use MarcelStrahl\Container\Dto\ObjectStore;
 use MarcelStrahl\Container\FileLoader\AdapterBuilder;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
-use MarcelStrahl\Container\ObjectBuilder\FactoryBuilder;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactory;
-use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use MarcelStrahl\Container\ObjectContainer;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummy;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
 use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory;
-use PhpParser\BuilderFactory;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\Assert;
 
@@ -67,7 +64,6 @@ final class WorkflowTest extends TestCase
 
         $builderFactory = new ObjectBuilderFactory();
         $delegator = new ObjectDelegator($builderFactory);
-
 
         $classStore = $adapter->loadFileFromPaths([$pathOne, $pathTwo], ClassStore::create());
 

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Delegator;
 
-use MarcelStrahl\Container\Factory\FactoryInterface;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactoryInterface;
-
 use function class_implements;
 use function in_array;
+
+use MarcelStrahl\Container\Factory\FactoryInterface;
+use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactoryInterface;
 use function method_exists;
 
 final class ObjectDelegator implements DelegateInterface

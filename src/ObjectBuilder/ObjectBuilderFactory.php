@@ -31,6 +31,7 @@ final class ObjectBuilderFactory implements ObjectBuilderFactoryInterface
         );
 
         $reflectionBuilder = new ReflectionBuilder();
+
         return match ($builderType) {
             self::BUILDER_REFLECTION => $reflectionBuilder,
             self::BUILDER_FACTORY => new FactoryBuilder($container, $reflectionBuilder),

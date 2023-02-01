@@ -6,7 +6,6 @@ namespace MarcelStrahl\Tests\ObjectBuilder;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use MarcelStrahl\Container\ObjectBuilder\FactoryBuilder;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
-use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
 use MarcelStrahl\Tests\ObjectBuilder\_data\Factory\Factory;
 use MarcelStrahl\Tests\ObjectBuilder\_data\Factory\FactoryWithInvoke;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;

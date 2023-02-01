@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\ObjectBuilder;
 
+use function class_exists;
+use function is_callable;
 use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
 use ReflectionClass;
 use ReflectionException;
+
 use ReflectionParameter;
 use Webmozart\Assert\Assert;
-
-use function is_callable;
-use function class_exists;
 
 final class ReflectionBuilder implements ObjectBuilder
 {

@@ -44,7 +44,7 @@ final class ObjectDelegatorTest extends TestCase
      */
     public function canDetectFactoryByInvokeMethod(): void
     {
-        $dummyFactory = new class {
+        $dummyFactory = new class() {
             public function __invoke(ContainerInterface $container): object
             {
                 return new SimpleTestServiceWithoutConstructor();
@@ -75,7 +75,7 @@ final class ObjectDelegatorTest extends TestCase
      */
     public function canDelegateFactoryWithFactoryInterface(): void
     {
-        $dummyFactory = new class implements FactoryInterface {
+        $dummyFactory = new class() implements FactoryInterface {
             public function factorize(ContainerInterface $container): object
             {
                 return new SimpleTestServiceWithoutConstructor();

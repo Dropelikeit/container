@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\ObjectBuilder;
 
-use MarcelStrahl\Container\Exception\NotFoundInContainerException;
-use MarcelStrahl\Container\Factory\FactoryInterface;
-use Psr\Container\ContainerInterface;
-
 use function class_exists;
 use function is_callable;
+use MarcelStrahl\Container\Exception\NotFoundInContainerException;
+
+use MarcelStrahl\Container\Factory\FactoryInterface;
 use function method_exists;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>

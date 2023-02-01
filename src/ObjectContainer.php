@@ -8,7 +8,6 @@ use LogicException;
 use MarcelStrahl\Container\Delegator\DelegateInterface;
 use MarcelStrahl\Container\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
 use Psr\Container\ContainerInterface;
 
 final class ObjectContainer implements ContainerInterface

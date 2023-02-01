@@ -9,7 +9,6 @@ use MarcelStrahl\Container\ClassContainerInterface;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
 use MarcelStrahl\Container\Exception\CannotRetrieveException;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
-use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
 use MarcelStrahl\Tests\ObjectBuilder\_data\Factory\FactoryWithInvoke;
 use MarcelStrahl\Tests\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;
 use PHPUnit\Framework\MockObject\MockObject;
