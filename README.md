@@ -58,5 +58,33 @@ $builderFactory->setContainer($app);
 // Insert `$app` into your application context
 ```
 
+You need to follow config structure. It is good to know that you can also specify an empty array 
+if you do not want to specify an alias or a factory.
 
+```php
+<?php
+
+<?php
+
+declare(strict_types=1);
+
+return [
+    // class => [factory?: class-string, alias?: class-string, id?: non-empty-string]
+    \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummy::class => [],
+    \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory::class => [
+        'factory' => \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory::class,
+    ],
+    \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithServiceId::class => [
+        'id' => 'serviceId',
+    ],
+    \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithAlias::class => [
+        'alias' => \MarcelStrahl\Tests\Unit\FileLoader\data\AliasInterface::class,
+    ],
+    \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory::class => [
+        'alias' => \MarcelStrahl\Tests\Unit\FileLoader\data\AliasInterface::class,
+        'id' => 'serviceId',
+        'factory' => \MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory::class,
+    ],
+];
+```
 
