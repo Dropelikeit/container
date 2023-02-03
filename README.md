@@ -64,8 +64,6 @@ if you do not want to specify an alias or a factory.
 ```php
 <?php
 
-<?php
-
 declare(strict_types=1);
 
 return [
