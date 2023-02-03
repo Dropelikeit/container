@@ -14,7 +14,12 @@
             <text outputFile="php://stdout" showUncoveredFiles="false"/>
         </report>
     </coverage>
-    <testsuite name="PriceCalculator">
-        <directory suffix="Test.php">tests</directory>
-    </testsuite>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Acceptance">
+            <directory suffix="Test.php">tests/Acceptance</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

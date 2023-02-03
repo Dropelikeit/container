@@ -13,9 +13,9 @@ use MarcelStrahl\Container\FileLoader\AdapterBuilder;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactory;
 use MarcelStrahl\Container\ObjectContainer;
-use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummy;
-use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
-use MarcelStrahl\Tests\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory;
+use MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummy;
+use MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory;
+use MarcelStrahl\Tests\Unit\FileLoader\data\PhpArrayLoaderClassDummyWithFactory\Factory;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\Assert;
 
@@ -30,7 +30,7 @@ final class WorkflowTest extends TestCase
     {
         $adapter = (new AdapterBuilder())->build(PHPArrayAdapter::class);
 
-        $path = sprintf('%s/../FileLoader/php_array_config.php', __DIR__);
+        $path = sprintf('%s/../Unit/FileLoader/php_array_config.php', __DIR__);
         Assert::stringNotEmpty($path);
 
         $builderFactory = new ObjectBuilderFactory();
@@ -56,10 +56,10 @@ final class WorkflowTest extends TestCase
     {
         $adapter = (new AdapterBuilder())->build(PHPArrayAdapter::class);
 
-        $pathOne = sprintf('%s/../FileLoader/php_array_config.php', __DIR__);
+        $pathOne = sprintf('%s/../Unit/FileLoader/php_array_config.php', __DIR__);
         Assert::stringNotEmpty($pathOne);
 
-        $pathTwo = sprintf('%s/../FileLoader/array_config.php', __DIR__);
+        $pathTwo = sprintf('%s/../Unit/FileLoader/array_config.php', __DIR__);
         Assert::stringNotEmpty($pathTwo);
 
         $builderFactory = new ObjectBuilderFactory();
