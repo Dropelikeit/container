@@ -35,7 +35,7 @@ jobs:
         run: |
           composer test-unit
           composer global require php-coveralls/php-coveralls
-          php-coveralls --coverage_clover=build/output/tests/coverage.xml --json_path=build/output/tests/coveralls-upload.json -v
+          php-coveralls --coverage_clover=build/output/tests/coverage/clover.xml --json_path=build/output/tests/coveralls-upload.json -v
 
       - name: "Run acceptance tests"
         run: "composer test-acceptance"
