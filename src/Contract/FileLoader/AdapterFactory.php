@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\FileLoader;
+namespace MarcelStrahl\Container\Contract\FileLoader;
 
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>

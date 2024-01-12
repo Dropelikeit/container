@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace MarcelStrahl\Container;
 
 use LogicException;
-use MarcelStrahl\Container\Delegator\DelegateInterface;
-use MarcelStrahl\Container\Dto\ObjectStoreInterface;
+use MarcelStrahl\Container\Contract\Delegator\DelegateInterface;
+use MarcelStrahl\Container\Contract\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use Psr\Container\ContainerInterface;
 

@@ -4,46 +4,50 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\FileLoader;
 
+use MarcelStrahl\Container\Contract\FileLoader\AdapterFactory;
 use MarcelStrahl\Container\Exception\FileLoader\AdapterBuilderException;
 use MarcelStrahl\Container\FileLoader\AdapterBuilder;
-use MarcelStrahl\Container\FileLoader\AdapterFactory;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @author Marcel Strahl <info@marcel-strahl.de>
- *
- * @internal
- *
- */
+#[CoversClass(className: AdapterBuilder::class)]
+#[UsesClass(className: AdapterFactory::class)]
+#[UsesClass(className: AdapterBuilderException::class)]
 final class AdapterBuilderTest extends TestCase
 {
-    public function testCanInitializeBuilder(): void
+    #[Test]
+    public function canInitializeBuilder(): void
     {
         $builder = new AdapterBuilder();
 
-        static::assertInstanceOf(AdapterFactory::class, $builder);
+        $this->assertInstanceOf(AdapterFactory::class, $builder);
     }
 
-    public function testCanBuildPhpArrayConfigAdapterWithGivenClassName(): void
+    #[Test]
+    public function canBuildPhpArrayConfigAdapterWithGivenClassName(): void
     {
         $builder = new AdapterBuilder();
 
         $adapter = $builder->build(PHPArrayAdapter::class);
 
-        static::assertInstanceOf(PHPArrayAdapter::class, $adapter);
+        $this->assertInstanceOf(PHPArrayAdapter::class, $adapter);
     }
 
-    public function testCanBuildPhpArrayConfigAdapterWithGivenId(): void
+    #[Test]
+    public function canBuildPhpArrayConfigAdapterWithGivenId(): void
     {
         $builder = new AdapterBuilder();
 
         $adapter = $builder->build(AdapterFactory::PHP_ARRAY_CONFIG_ADAPTER);
 
-        static::assertInstanceOf(PHPArrayAdapter::class, $adapter);
+        $this->assertInstanceOf(PHPArrayAdapter::class, $adapter);
     }
 
-    public function testThrowExceptionIfGivenArgumentIsUnknown(): void
+    #[Test]
+    public function throwExceptionIfGivenArgumentIsUnknown(): void
     {
         $this->expectException(AdapterBuilderException::class);
         $this->expectExceptionMessage('Given unknown adapter type "dummy"');

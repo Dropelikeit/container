@@ -5,9 +5,9 @@ namespace MarcelStrahl\Container\ObjectBuilder;
 
 use function class_exists;
 use function is_callable;
+use MarcelStrahl\Container\Contract\Factory\FactoryInterface;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
-
-use MarcelStrahl\Container\Factory\FactoryInterface;
 use function method_exists;
 use Psr\Container\ContainerInterface;
 

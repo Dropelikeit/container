@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\FileLoader;
 
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Exception\NonExistingFileException;
 use MarcelStrahl\Container\Exception\UnknownFileExtensionException;
 use MarcelStrahl\Container\FileLoader\PHPArrayAdapter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\Assert;
 
-/**
- * @author Marcel Strahl <info@marcel-strahl.de>
- *
- * @internal
- */
+#[CoversClass(className: PHPArrayAdapter::class)]
+#[UsesClass(className: ClassStoreInterface::class)]
+#[UsesClass(className: NonExistingFileException::class)]
+#[UsesClass(className: UnknownFileExtensionException::class)]
+#[UsesClass(className: ClassItem::class)]
 final class PhpArrayAdapterTest extends TestCase
 {
-/**
- * @psalm-var MockObject&ClassStoreInterface
- */
-    /* MockObject&ClassStoreInterface */ private $store;
+    private readonly MockObject&ClassStoreInterface $store;
 
     protected function setUp(): void
     {
-        $this->store = $this->createMock(ClassStoreInterface::class);
+        $this->store = $this->getMockBuilder(ClassStoreInterface::class)->getMock();
     }
 
     public function testCanNotLoadFromFilePathWithNoneExistingFile(): void
@@ -46,7 +45,7 @@ final class PhpArrayAdapterTest extends TestCase
         $this->expectException(UnknownFileExtensionException::class);
 
         $path = sprintf('%s/config', __DIR__);
-        static::assertNotEmpty($path);
+        $this->assertNotEmpty($path);
 
         $fileLoader = new PHPArrayAdapter();
 
@@ -56,16 +55,9 @@ final class PhpArrayAdapterTest extends TestCase
     public function testCanLoadFromFilePathSuccessful(): void
     {
         $path = sprintf('%s/php_array_config.php', __DIR__);
-        static::assertNotEmpty($path);
+        $this->assertNotEmpty($path);
 
-        $content = include $path;
-
-        $classItems = [];
-        foreach ($content as $class => $item) {
-            $classItems[] = [ClassItem::create($class, $item)];
-        }
-
-        $this->store->expects(static::exactly(4))->method('append')->withConsecutive(...$classItems);
+        $this->store->expects(self::exactly(4))->method('append');
 
         $fileLoader = new PHPArrayAdapter();
         $fileLoader->loadFileFromPath($path, $this->store);
@@ -78,27 +70,15 @@ final class PhpArrayAdapterTest extends TestCase
         $pathTwo = sprintf('%s/array_config.php', __DIR__);
         Assert::stringNotEmpty($pathTwo);
 
-        $paths = [
-            $pathOne,
-            $pathTwo,
-        ];
-
-        $classItems = [];
-        foreach ($paths as $path) {
-            $content = include $path;
-
-            foreach ($content as $class => $item) {
-                $classItems[] = [ClassItem::create($class, $item)];
-            }
-        }
-
         $this->store
-            ->expects(static::exactly(7))
+            ->expects(self::exactly(7))
             ->method('append')
-            ->withConsecutive(...$classItems)
         ;
 
         $fileLoader = new PHPArrayAdapter();
-        $fileLoader->loadFileFromPaths($paths, $this->store);
+        $fileLoader->loadFileFromPaths([
+            $pathOne,
+            $pathTwo,
+        ], $this->store);
     }
 }

@@ -7,10 +7,10 @@ namespace MarcelStrahl\Container\ObjectBuilder;
 use function class_exists;
 use function is_callable;
 use LogicException;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilder;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;
 use ReflectionClass;
 use ReflectionException;
-
 use ReflectionParameter;
 use Webmozart\Assert\Assert;
 

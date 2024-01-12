@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\Dto;
 
+use MarcelStrahl\Container\Contract\Dto\ObjectStoreInterface;
 use MarcelStrahl\Container\Dto\ObjectStore;
-use MarcelStrahl\Container\Dto\ObjectStoreInterface;
+use MarcelStrahl\Container\Dto\ObjectStoreItem;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- *
-
- */
+#[CoversClass(className: ObjectStore::class)]
+#[UsesClass(className: ObjectStoreInterface::class)]
+#[UsesClass(className: ObjectStoreItem::class)]
 final class ObjectStoreTest extends TestCase
 {
     public function testCanInitialize(): void
     {
         $store = ObjectStore::create();
 
-        static::assertInstanceOf(ObjectStoreInterface::class, $store);
+        $this->assertInstanceOf(ObjectStoreInterface::class, $store);
     }
 
     public function testCanStoreObject(): void
@@ -32,7 +33,7 @@ final class ObjectStoreTest extends TestCase
 
         $object = $store->searchById($dummyClass::class);
 
-        static::assertInstanceOf($dummyClass::class, $object);
+        $this->assertInstanceOf($dummyClass::class, $object);
     }
 
     public function testCanSearchById(): void
@@ -45,7 +46,7 @@ final class ObjectStoreTest extends TestCase
 
         $object = $store->searchById($dummyClass::class);
 
-        static::assertInstanceOf($dummyClass::class, $object);
+        $this->assertInstanceOf($dummyClass::class, $object);
     }
 
     public function testCanNotFindAnObjectWithGivenId(): void
@@ -56,6 +57,6 @@ final class ObjectStoreTest extends TestCase
 
         $object = $store->searchById($dummyClass::class);
 
-        static::assertNull($object);
+        $this->assertNull($object);
     }
 }

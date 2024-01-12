@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\Dto;
+namespace MarcelStrahl\Container\Contract\Dto;
 
 interface ObjectStoreInterface
 {

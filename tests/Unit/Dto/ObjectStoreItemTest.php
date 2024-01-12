@@ -9,13 +9,10 @@ use MarcelStrahl\Tests\Unit\Dto\_data\DummyAbstract;
 use MarcelStrahl\Tests\Unit\Dto\_data\DummyClassWithAbstract;
 use MarcelStrahl\Tests\Unit\Dto\_data\DummyClassWithInterface;
 use MarcelStrahl\Tests\Unit\Dto\_data\DummyInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- *
-
- */
+#[CoversClass(className: ObjectStoreItem::class)]
 final class ObjectStoreItemTest extends TestCase
 {
     public function testCanSearchById(): void
@@ -26,7 +23,7 @@ final class ObjectStoreItemTest extends TestCase
 
         $result = $item->searchByGivenId($dummy::class);
 
-        static::assertSame($result, $dummy);
+        $this->assertSame($result, $dummy);
     }
 
     public function testCanSearchByClass(): void
@@ -37,7 +34,7 @@ final class ObjectStoreItemTest extends TestCase
 
         $result = $item->searchByGivenId($dummy::class);
 
-        static::assertSame($result, $dummy);
+        $this->assertSame($result, $dummy);
     }
 
     public function testCanSearchByInterface(): void
@@ -48,7 +45,7 @@ final class ObjectStoreItemTest extends TestCase
 
         $result = $item->searchByGivenId(DummyInterface::class);
 
-        static::assertSame($result, $test);
+        $this->assertSame($result, $test);
     }
 
     public function testCanSearchByAbstract(): void
@@ -59,7 +56,7 @@ final class ObjectStoreItemTest extends TestCase
 
         $result = $item->searchByGivenId(DummyAbstract::class);
 
-        static::assertSame($result, $test);
+        $this->assertSame($result, $test);
     }
 
     public function testCanNotMatchGivenClassWithStoredObject(): void
@@ -70,6 +67,6 @@ final class ObjectStoreItemTest extends TestCase
 
         $result = $item->searchByGivenId(DummyInterface::class);
 
-        static::assertNull($result);
+        $this->assertNull($result);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\Delegator;
+namespace MarcelStrahl\Container\Contract\Delegator;
 
 interface DelegateInterface
 {

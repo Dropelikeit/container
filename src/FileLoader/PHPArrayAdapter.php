@@ -7,9 +7,9 @@ namespace MarcelStrahl\Container\FileLoader;
 use function array_walk;
 use function call_user_func_array;
 use function file_exists;
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
+use MarcelStrahl\Container\Contract\FileLoader\FileLoader;
 use MarcelStrahl\Container\Dto\ClassStore;
-
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Exception\NonExistingFileException;
 use MarcelStrahl\Container\Exception\UnknownFileExtensionException;
 use function str_contains;

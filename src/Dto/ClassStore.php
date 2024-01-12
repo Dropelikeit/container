@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
 
-use MarcelStrahl\Container\Dto\ClassStore\ClassItemInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStore\ClassItemInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 
 final class ClassStore implements ClassStoreInterface
 {

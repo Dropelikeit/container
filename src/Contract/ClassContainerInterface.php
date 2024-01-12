@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container;
+namespace MarcelStrahl\Container\Contract;
 
-use MarcelStrahl\Container\Dto\ClassStore\ClassItemInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStore\ClassItemInterface;
 use Psr\Container\ContainerInterface;
 
 interface ClassContainerInterface extends ContainerInterface
