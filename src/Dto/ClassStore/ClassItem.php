@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto\ClassStore;
 
+use MarcelStrahl\Container\Contract\Dto\ClassStore\ClassItemInterface;
 use Webmozart\Assert\Assert;
 
 final class ClassItem implements ClassItemInterface

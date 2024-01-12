@@ -4,30 +4,33 @@ declare(strict_types=1);
 namespace MarcelStrahl\Tests\Unit\ObjectBuilder;
 
 use InvalidArgumentException;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilder;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilderFactoryInterface;
 use MarcelStrahl\Container\Exception\ObjectBuilderFactory\UnknownBuilderTypeException;
 use MarcelStrahl\Container\ObjectBuilder\FactoryBuilder;
 use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactory;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactoryInterface;
 use MarcelStrahl\Container\ObjectBuilder\ReflectionBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
+#[CoversClass(className: ObjectBuilder::class)]
+#[UsesClass(className: UnknownBuilderTypeException::class)]
+#[UsesClass(className: ObjectBuilderFactory::class)]
+#[UsesClass(className: FactoryBuilder::class)]
 final class ObjectBuilderFactoryTest extends TestCase
 {
-    /**
-     * @psalm-var MockObject&ContainerInterface
-     */
-    private MockObject $container;
+    private readonly MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container = $this->getMockBuilder(ContainerInterface::class)->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canInitializeFactory(): void
     {
         $factory = new ObjectBuilderFactory();
@@ -35,9 +38,7 @@ final class ObjectBuilderFactoryTest extends TestCase
         $this->assertInstanceOf(ObjectBuilderFactoryInterface::class, $factory);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGetReflectionBuilder(): void
     {
         $factory = new ObjectBuilderFactory();
@@ -48,9 +49,7 @@ final class ObjectBuilderFactoryTest extends TestCase
         $this->assertInstanceOf(ReflectionBuilder::class, $builder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsInvalidArgumentExceptionBecauseContainerIsNotSet(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -63,9 +62,7 @@ final class ObjectBuilderFactoryTest extends TestCase
         $this->assertEquals(FactoryBuilder::class, $builder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canGetFactoryBuilder(): void
     {
         $factory = new ObjectBuilderFactory();
@@ -76,9 +73,7 @@ final class ObjectBuilderFactoryTest extends TestCase
         $this->assertInstanceOf(FactoryBuilder::class, $builder);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsExceptionBecauseUnknownBuilderTypeIsGiven(): void
     {
         $this->expectException(UnknownBuilderTypeException::class);

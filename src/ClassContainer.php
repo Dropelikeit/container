@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
 
-use MarcelStrahl\Container\Dto\ClassStore\ClassItemInterface;
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
+use MarcelStrahl\Container\Contract\ClassContainerInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStore\ClassItemInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 
 final class ClassContainer implements ClassContainerInterface

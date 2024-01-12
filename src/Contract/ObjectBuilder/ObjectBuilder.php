@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\ObjectBuilder;
+namespace MarcelStrahl\Container\Contract\ObjectBuilder;
 
 use LogicException;
 use MarcelStrahl\Container\Exception\ObjectBuilder\CanNotCreateClassWithNoneClassDependencies;

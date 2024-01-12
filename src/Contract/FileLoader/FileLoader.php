@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\FileLoader;
+namespace MarcelStrahl\Container\Contract\FileLoader;
 
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Exception\NonExistingFileException;
 
 interface FileLoader

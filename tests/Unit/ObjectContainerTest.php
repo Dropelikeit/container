@@ -4,34 +4,31 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit;
 
-use MarcelStrahl\Container\Delegator\DelegateInterface;
-use MarcelStrahl\Container\Dto\ObjectStoreInterface;
+use MarcelStrahl\Container\Contract\Delegator\DelegateInterface;
+use MarcelStrahl\Container\Contract\Dto\ObjectStoreInterface;
+
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
 use MarcelStrahl\Container\ObjectContainer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-/**
- * @internal
- *
- */
+#[CoversClass(className: ObjectContainer::class)]
+#[UsesClass(className: ObjectStoreInterface::class)]
+#[UsesClass(className: DelegateInterface::class)]
+#[UsesClass(className: DelegateInterface::class)]
+#[UsesClass(className: NotFoundInContainerException::class)]
 final class ObjectContainerTest extends TestCase
 {
-    /**
-     * @psalm-var MockObject&ObjectStoreInterface
-     */
-    private MockObject/* &ObjectStoreInterface */ $store;
-
-    /**
-     * @psalm-var MockObject&DelegateInterface
-     */
-    private MockObject/* &ObjectBuilder */ $delegator;
+    private readonly MockObject&ObjectStoreInterface $store;
+    private readonly MockObject&DelegateInterface $delegator;
 
     protected function setUp(): void
     {
-        $this->store = $this->createMock(ObjectStoreInterface::class);
-        $this->delegator = $this->createMock(DelegateInterface::class);
+        $this->store = $this->getMockBuilder(ObjectStoreInterface::class)->getMock();
+        $this->delegator = $this->getMockBuilder(DelegateInterface::class)->getMock();
     }
 
     public function testCanInitialize(): void
@@ -46,7 +43,7 @@ final class ObjectContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn($dummy)
@@ -56,7 +53,7 @@ final class ObjectContainerTest extends TestCase
 
         $object = $container->get($dummy::class);
 
-        static::assertInstanceOf($dummy::class, $object);
+        $this->assertInstanceOf($dummy::class, $object);
     }
 
     public function testCanNotGetContainerWhenClassNotExist(): void
@@ -64,7 +61,7 @@ final class ObjectContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->expectException(NotFoundInContainerException::class);
-        $this->expectErrorMessage(sprintf(
+        $this->expectExceptionMessage(sprintf(
             'Can not found a entry in container with given id "%s"',
             $dummy::class,
         ));
@@ -72,14 +69,14 @@ final class ObjectContainerTest extends TestCase
         $exception = new \LogicException();
 
         $this->delegator
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('delegate')
             ->with($dummy::class)
             ->willThrowException($exception)
         ;
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn(null)
@@ -89,7 +86,7 @@ final class ObjectContainerTest extends TestCase
 
         $object = $container->get($dummy::class);
 
-        static::assertInstanceOf($dummy::class, $dummy);
+        $this->assertInstanceOf($dummy::class, $dummy);
     }
 
     public function testInitializeObjectWhenClassNotExistInObjectContainer(): void
@@ -97,21 +94,21 @@ final class ObjectContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->delegator
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('delegate')
             ->with($dummy::class)
             ->willReturn($dummy)
         ;
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn(null)
         ;
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('append')
             ->with($dummy::class, $dummy)
         ;
@@ -120,7 +117,7 @@ final class ObjectContainerTest extends TestCase
 
         $container->get($dummy::class);
 
-        static::assertInstanceOf($dummy::class, $dummy);
+        $this->assertInstanceOf($dummy::class, $dummy);
     }
 
     public function testCheckContainerHasObject(): void
@@ -128,7 +125,7 @@ final class ObjectContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn($dummy)
@@ -136,7 +133,7 @@ final class ObjectContainerTest extends TestCase
 
         $container = new ObjectContainer($this->store, $this->delegator);
 
-        static::assertTrue($container->has($dummy::class));
+        $this->assertTrue($container->has($dummy::class));
     }
 
     public function testCheckContainerHasNotObject(): void
@@ -144,7 +141,7 @@ final class ObjectContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->store
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn(null)
@@ -152,6 +149,6 @@ final class ObjectContainerTest extends TestCase
 
         $container = new ObjectContainer($this->store, $this->delegator);
 
-        static::assertFalse($container->has($dummy::class));
+        $this->assertFalse($container->has($dummy::class));
     }
 }

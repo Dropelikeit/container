@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\Factory;
+namespace MarcelStrahl\Container\Contract\Factory;
 
 use Psr\Container\ContainerInterface;
 

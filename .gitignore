@@ -1,7 +1,9 @@
 .idea
 .phpunit.result.cache
+/.phpunit.cache/
 /vendor/
 composer.lock
 /bin/
 /tmp/
 /html/
+/build

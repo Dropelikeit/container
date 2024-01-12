@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\Dto;
 
+use MarcelStrahl\Container\Contract\Dto\ObjectStoreInterface;
 use Webmozart\Assert\Assert;
 
 final class ObjectStore implements ObjectStoreInterface

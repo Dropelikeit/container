@@ -5,34 +5,34 @@ declare(strict_types=1);
 namespace MarcelStrahl\Tests\Unit;
 
 use MarcelStrahl\Container\ClassContainer;
-use MarcelStrahl\Container\ClassContainerInterface;
+use MarcelStrahl\Container\Contract\ClassContainerInterface;
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- *
- */
+#[CoversClass(className: ClassContainer::class)]
+#[UsesClass(className: ClassStoreInterface::class)]
+#[UsesClass(className: ClassContainerInterface::class)]
+#[UsesClass(className: ClassItem::class)]
+#[UsesClass(className: NotFoundInContainerException::class)]
 final class ClassContainerTest extends TestCase
 {
-    /**
-     * @psalm-var MockObject&ClassStoreInterface
-     */
-    private MockObject/* &ClassStoreInterface */ $classStore;
+    private readonly MockObject&ClassStoreInterface $classStore;
 
     protected function setUp(): void
     {
-        $this->classStore = $this->createMock(ClassStoreInterface::class);
+        $this->classStore = $this->getMockBuilder(ClassStoreInterface::class)->getMock();
     }
 
     public function testCanInitialize(): void
     {
         $container = ClassContainer::create($this->classStore);
 
-        static::assertInstanceOf(ClassContainerInterface::class, $container);
+        $this->assertInstanceOf(ClassContainerInterface::class, $container);
     }
 
     public function testCanAppendClass(): void
@@ -42,7 +42,7 @@ final class ClassContainerTest extends TestCase
         $classItem = ClassItem::create($dummy::class, []);
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('append')
             ->with($classItem)
         ;
@@ -55,11 +55,11 @@ final class ClassContainerTest extends TestCase
     {
         $container = ClassContainer::create($this->classStore);
 
-        static::assertFalse($container->isCompiled());
+        $this->assertFalse($container->isCompiled());
 
         $container->compile();
 
-        static::assertTrue($container->isCompiled());
+        $this->assertTrue($container->isCompiled());
     }
 
     public function testCanGetAService(): void
@@ -69,13 +69,13 @@ final class ClassContainerTest extends TestCase
         $classItem = ClassItem::create($dummy::class, []);
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('append')
             ->with($classItem)
         ;
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn($classItem)
@@ -95,13 +95,13 @@ final class ClassContainerTest extends TestCase
         $classItem = ClassItem::create($dummy::class, []);
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('append')
             ->with($classItem)
         ;
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('searchById')
             ->with($dummy::class)
             ->willReturn(null)
@@ -125,7 +125,7 @@ final class ClassContainerTest extends TestCase
 
         $container = ClassContainer::create($this->classStore);
 
-        static::assertTrue($container->has($dummy::class));
+        $this->assertTrue($container->has($dummy::class));
     }
 
     public function testCanCheckIfEntryNotExist(): void
@@ -133,7 +133,7 @@ final class ClassContainerTest extends TestCase
         $dummy = new class() {};
 
         $this->classStore
-            ->expects(static::once())
+            ->expects(self::once())
             ->method('hasEntry')
             ->with($dummy::class)
             ->willReturn(false)
@@ -141,6 +141,6 @@ final class ClassContainerTest extends TestCase
 
         $container = ClassContainer::create($this->classStore);
 
-        static::assertFalse($container->has($dummy::class));
+        $this->assertFalse($container->has($dummy::class));
     }
 }

@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\Dto;
 
+use MarcelStrahl\Container\Contract\Dto\ClassStoreInterface;
 use MarcelStrahl\Container\Dto\ClassStore;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
-use MarcelStrahl\Container\Dto\ClassStoreInterface;
 use MarcelStrahl\Tests\Unit\FileLoader\data\AliasInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- *
-
- */
+#[CoversClass(className: ClassStore::class)]
+#[UsesClass(className: ClassStoreInterface::class)]
+#[UsesClass(className: ClassItem::class)]
 final class ClassStoreTest extends TestCase
 {
     public function testCanInitializeObject(): void
     {
         $store = ClassStore::create();
 
-        static::assertInstanceOf(ClassStoreInterface::class, $store);
+        $this->assertInstanceOf(ClassStoreInterface::class, $store);
     }
 
     public function testCanAppendNewEntryToStore(): void
@@ -33,7 +33,7 @@ final class ClassStoreTest extends TestCase
         $store = ClassStore::create();
         $store->append($classItem);
 
-        static::assertTrue($store->hasEntry($dummy::class));
+        $this->assertTrue($store->hasEntry($dummy::class));
     }
 
     public function testCanAppendToStoreByAlias(): void
@@ -45,7 +45,7 @@ final class ClassStoreTest extends TestCase
         $store = ClassStore::create();
         $store->append($classItem);
 
-        static::assertTrue($store->hasEntry($dummy::class));
+        $this->assertTrue($store->hasEntry($dummy::class));
     }
 
     public function testCanSearchByIdSuccessful(): void
@@ -59,7 +59,7 @@ final class ClassStoreTest extends TestCase
 
         $metaData = $store->searchById($dummy::class);
 
-        static::assertSame($classItem, $metaData);
+        $this->assertSame($classItem, $metaData);
     }
 
     public function testCanNotSearchByIdSuccessful(): void
@@ -70,7 +70,7 @@ final class ClassStoreTest extends TestCase
 
         $metadata = $store->searchById($dummy::class);
 
-        static::assertNull($metadata);
+        $this->assertNull($metadata);
     }
 
     public function testCanCheckEntryExist(): void
@@ -84,7 +84,7 @@ final class ClassStoreTest extends TestCase
 
         $result = $store->hasEntry($dummy::class);
 
-        static::assertTrue($result);
+        $this->assertTrue($result);
     }
 
     public function testCanCheckEntryIsNotExist(): void
@@ -95,6 +95,6 @@ final class ClassStoreTest extends TestCase
 
         $result = $store->hasEntry($dummy::class);
 
-        static::assertFalse($result);
+        $this->assertFalse($result);
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\ObjectBuilder\_data\Factory;
 
-use MarcelStrahl\Container\Factory\FactoryInterface;
+use MarcelStrahl\Container\Contract\Factory\FactoryInterface;
 use MarcelStrahl\Tests\Unit\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;
 use Psr\Container\ContainerInterface;
 

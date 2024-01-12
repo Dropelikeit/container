@@ -5,9 +5,9 @@ namespace MarcelStrahl\Container\Delegator;
 
 use function class_implements;
 use function in_array;
-
-use MarcelStrahl\Container\Factory\FactoryInterface;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactoryInterface;
+use MarcelStrahl\Container\Contract\Delegator\DelegateInterface;
+use MarcelStrahl\Container\Contract\Factory\FactoryInterface;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilderFactoryInterface;
 use function method_exists;
 
 final class ObjectDelegator implements DelegateInterface

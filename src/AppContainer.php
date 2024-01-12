@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container;
 
+use MarcelStrahl\Container\Contract\ClassContainerInterface;
 use MarcelStrahl\Container\Dto\ClassStore\ClassItem;
 use MarcelStrahl\Container\Exception\CannotRetrieveException;
 use MarcelStrahl\Container\Exception\NotFoundInContainerException;

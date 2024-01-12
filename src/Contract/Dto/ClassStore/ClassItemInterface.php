@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\Dto\ClassStore;
+namespace MarcelStrahl\Container\Contract\Dto\ClassStore;
 
 interface ClassItemInterface
 {

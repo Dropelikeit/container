@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Container\ObjectBuilder;
 
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilder;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilderFactoryInterface;
 use MarcelStrahl\Container\Exception\ObjectBuilderFactory\UnknownBuilderTypeException;
 use Psr\Container\ContainerInterface;
 use Webmozart\Assert\Assert;
@@ -17,7 +19,7 @@ final class ObjectBuilderFactory implements ObjectBuilderFactoryInterface
     }
 
     /**
-     * @psalm-param self::BUILDER_* $builderType
+     * @psalm-param self::BUILDER_*|'' $builderType
      * @throws UnknownBuilderTypeException
      */
     public function factorize(string $builderType): ObjectBuilder

@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace MarcelStrahl\Tests\Unit\Delegator;
 
+use MarcelStrahl\Container\Contract\Factory\FactoryInterface;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilder;
+use MarcelStrahl\Container\Contract\ObjectBuilder\ObjectBuilderFactoryInterface;
 use MarcelStrahl\Container\Delegator\ObjectDelegator;
-use MarcelStrahl\Container\Factory\FactoryInterface;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilder;
-use MarcelStrahl\Container\ObjectBuilder\ObjectBuilderFactoryInterface;
 use MarcelStrahl\Tests\Unit\ObjectBuilder\_data\SimpleTestServiceWithoutConstructor;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -15,33 +18,23 @@ use Psr\Container\ContainerInterface;
 /**
  * @author Marcel Strahl <info@marcel-strahl.de>
  */
+#[CoversClass(className: ObjectDelegator::class)]
+#[UsesClass(className: ObjectBuilderFactoryInterface::class)]
+#[UsesClass(className: ObjectBuilder::class)]
 final class ObjectDelegatorTest extends TestCase
 {
-    /**
-     * @psalm-var MockObject&ObjectBuilderFactoryInterface
-     */
-    private MockObject $builderFactory;
-
-    /**
-     * @psalm-var MockObject&ObjectBuilder
-     */
-    private MockObject $builder;
-
-    /**
-     * @psalm-var MockObject&ContainerInterface
-     */
-    private MockObject $container;
+    private readonly MockObject&ObjectBuilderFactoryInterface $builderFactory;
+    private readonly MockObject&ObjectBuilder $builder;
+    private readonly MockObject&ContainerInterface $container;
 
     public function setUp(): void
     {
-        $this->builderFactory = $this->createMock(ObjectBuilderFactoryInterface::class);
-        $this->builder = $this->createMock(ObjectBuilder::class);
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->builderFactory = $this->getMockBuilder(ObjectBuilderFactoryInterface::class)->getMock();
+        $this->builder = $this->getMockBuilder(ObjectBuilder::class)->getMock();
+        $this->container = $this->getMockBuilder(ContainerInterface::class)->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canDetectFactoryByInvokeMethod(): void
     {
         $dummyFactory = new class() {
@@ -70,9 +63,7 @@ final class ObjectDelegatorTest extends TestCase
         $this->assertInstanceOf(SimpleTestServiceWithoutConstructor::class, $object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canDelegateFactoryWithFactoryInterface(): void
     {
         $dummyFactory = new class() implements FactoryInterface {
@@ -100,9 +91,7 @@ final class ObjectDelegatorTest extends TestCase
         $this->assertInstanceOf(SimpleTestServiceWithoutConstructor::class, $object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canDelegateWithoutFactory(): void
     {
         $dummy = new class() {};

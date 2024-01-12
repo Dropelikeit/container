@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MarcelStrahl\Container\ObjectBuilder;
+namespace MarcelStrahl\Container\Contract\ObjectBuilder;
 
 use MarcelStrahl\Container\Exception\ObjectBuilderFactory\UnknownBuilderTypeException;
 
