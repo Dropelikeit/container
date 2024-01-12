@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd" bootstrap="vendor/autoload.php" backupGlobals="false" executionOrder="random" beStrictAboutCoversAnnotation="true" beStrictAboutOutputDuringTests="true" beStrictAboutTestsThatDoNotTestAnything="true" beStrictAboutTodoAnnotatedTests="true" verbose="true">
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>./bin</directory>
+            <directory>./tests</directory>
+            <directory>./vendor</directory>
+        </exclude>
+        <report>
+            <clover outputFile="build/output/tests/coverage/clover.xml"/>
+            <cobertura outputFile="build/output/tests/coverage/cobertura.xml"/>
+            <php outputFile="build/output/tests/coverage/coverage.php"/>
+            <text outputFile="php://stdout" showUncoveredFiles="false"/>
+            <html outputDirectory="build/output/tests/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+            <xml outputDirectory="build/output/tests/coverage/xml"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="build/output/tests/logging/junit.xml"/>
+    </logging>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Acceptance">
+            <directory suffix="Test.php">tests/Acceptance</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
